@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from verispy import VERIS
 
+# Creates a bar graph of all the number of varieties of attack errors
+
 data_dir = "/Users/kiranmahn/GitHub/VCDB/data/json/validated"  # replace with your own address for data
 v = VERIS(json_dir=data_dir)
 
