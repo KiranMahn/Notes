@@ -16,7 +16,7 @@ veris_df = v.json_to_df(verbose=True)
 veris_df = veris_df.copy()
 
 # Use 'plus.timeline.notification.month' to get the month
-veris_df['month'] = veris_df['plus.timeline.notification.month']
+veris_df['month'] = veris_df['timeline.incident.month']
 
 # Find all columns that start with 'action.'
 action_columns = [col for col in veris_df.columns if col.startswith('action.') and '.variety' not in col]
@@ -57,8 +57,14 @@ for month in range(1, 13):
     ax = axes[(month - 1) // 4, (month - 1) % 4]
 
     # Create a bar graph if there's data for that month
+    colors = [
+    "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b",
+    "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"
+    ]
+    
     if not action_counts.empty:
-        ax.bar(labels, action_counts, color='skyblue')
+        bar_colors = [colors[i % len(colors)] for i in range(len(labels))]
+        ax.bar(labels, action_counts, color=bar_colors)
         ax.set_title(month_names[month - 1])  # Set title using month name
         ax.set_xlabel("Attack Type")
         ax.set_ylabel("Count")

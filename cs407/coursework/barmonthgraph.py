@@ -14,15 +14,21 @@ veris_df = v.json_to_df(verbose=True)
 veris_df = veris_df.copy()
 
 # Use 'plus.timeline.notification.month' to get the month
-veris_df['month'] = veris_df['plus.timeline.notification.month']
+veris_df['month'] = veris_df['timeline.incident.month']
 
 # Find all columns that start with 'action.error.variety.'
-error_variety_columns = [col for col in veris_df.columns if col.startswith('action.error.variety.')]
+error_variety_columns = [col for col in veris_df.columns if col.startswith('action.variety.')]
 
 # Define month names
 month_names = [
     "January", "February", "March", "April", "May", "June", 
     "July", "August", "September", "October", "November", "December"
+]
+
+# Define a list of colors to use for the bars (cyclically)
+colors = [
+    "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b",
+    "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"
 ]
 
 # Determine the maximum y value across all months to set a common y-axis limit
@@ -52,7 +58,10 @@ for month in range(1, 13):
 
     # Create a bar graph if there's data for that month
     if not error_variety_counts.empty:
-        ax.bar(labels, error_variety_counts, color='skyblue')
+        # Use the color list cyclically to color bars
+        bar_colors = [colors[i % len(colors)] for i in range(len(labels))]
+        
+        ax.bar(labels, error_variety_counts, color=bar_colors)
         ax.set_title(month_names[month - 1])  # Set title using month name
         ax.set_xlabel("Action Error Variety")
         ax.set_ylabel("Count")
